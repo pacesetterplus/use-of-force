@@ -3,7 +3,7 @@ const { StatementStatus } = require('../config/types')
 const statementConfig = require('../config/statement')
 const { validate } = require('../utils/fieldValidation')
 
-module.exports = function createIncidentService({ incidentClient }) {
+module.exports = function createReportService({ incidentClient }) {
   const getStatementsForUser = async (userId, status) => {
     const data = await incidentClient.getStatementsForUser(userId, status)
     return data.rows
@@ -23,7 +23,7 @@ module.exports = function createIncidentService({ incidentClient }) {
     return errors
   }
 
-  const saveStatement = (userId, reportId, statement) => {
+  const save = (userId, reportId, statement) => {
     logger.info(`Saving statement for user: ${userId} and incident: ${reportId}`)
     return incidentClient.saveStatement(userId, reportId, statement)
   }
@@ -36,7 +36,7 @@ module.exports = function createIncidentService({ incidentClient }) {
   return {
     getStatement,
     getStatementsForUser,
-    saveStatement,
+    save,
     submitStatement,
     validateSavedStatement,
   }
