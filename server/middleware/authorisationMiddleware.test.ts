@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken'
 
-const authorisationMiddleware = require('./authorisationMiddleware')
+import authorisationMiddleware from './authorisationMiddleware'
 
 const createToken = authorities => {
   const payload = {
@@ -20,13 +20,14 @@ describe('authorisationMiddleware', () => {
   let req
   const next = jest.fn()
 
-  const createResWithToken = authorities => ({
-    locals: {
-      user: {
-        token: createToken(authorities),
+  const createResWithToken = (authorities?: { authorities: string[] }) =>
+    ({
+      locals: {
+        user: {
+          token: createToken(authorities),
+        },
       },
-    },
-  })
+    } as any)
 
   describe('isReviewer', () => {
     test('Should populate isReviewer for reviewer', () => {

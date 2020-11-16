@@ -1,11 +1,15 @@
-const jwtDecode = require('jwt-decode')
+import { NextFunction, Request, Response } from 'express'
+
+import jwtDecode from 'jwt-decode'
 
 const COORDINATOR = 'ROLE_USE_OF_FORCE_COORDINATOR'
 const REVIEWER = 'ROLE_USE_OF_FORCE_REVIEWER'
 
-module.exports = (req, res, next) => {
+type Token = { authorities?: string[] }
+
+export default (req: Request, res: Response, next: NextFunction): void => {
   if (res.locals && res.locals.user && res.locals.user.token) {
-    const { authorities: roles = [] } = jwtDecode(res.locals.user.token)
+    const { authorities: roles = [] } = jwtDecode(res.locals.user.token) as Token
 
     const isAnyOf = options => options.some(role => roles.includes(role))
 
